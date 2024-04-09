@@ -8,11 +8,14 @@ import (
 
 //Hello returns a greeting for a named person
 func	Hello(name string) (string, error) {
+	//variables
+	var message string
+	
 	//when name is null
 	if name == "" {
 		return "", errors.New("empty name")
 	}
-	var message string = fmt.Sprintf(randomFormat(), name)
+	message = fmt.Sprintf(randomFormat(), name)
 	//message := fmt.Sprintf("Hi, %v. Welcome!!", name)
 	return message, nil
 }
