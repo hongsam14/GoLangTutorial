@@ -6,22 +6,27 @@ import (
 
 	"example.com/greetings"
 	
-	"rsc.io/quote/v4"
+	_"rsc.io/quote/v4"
        )
 
 func	main() {
+	var names []string = []string{"Jim", "Bob", "Kate"}
+	var message map[string] string
+	var err	error
+	
 	log.SetPrefix("greetings: ")
 	log.SetFlags(0)
 
-	var message string
-	var err error
 	//message, err = greetings.Hello("")
-	message, err = greetings.Hello("Jim")
+	//message, err = greetings.Hello("Jim")
+	message, err = greetings.Hellos(names)
 	//check error
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(message)
-	fmt.Println(quote.Go())
+	//fmt.Println(message)
+	for _, s := range message {
+		fmt.Println(s);
+	}
 }
