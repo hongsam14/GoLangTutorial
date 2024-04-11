@@ -83,3 +83,54 @@ func TestCompare(t *testing.T) {
 		t.Fatalf(`Compare("%s", "%s") = %d, want for %d`, str_a, str_b, mine, org)
 	}
 }
+
+func TestCompareANil(t *testing.T) {
+	var (
+		str_a     string
+		str_b     string
+		org, mine int
+	)
+	//init
+	str_a = ""
+	str_b = GetRandomString()
+	org = strings.Compare(str_a, str_b)
+	mine = Compare(str_a, str_b)
+
+	if org != mine {
+		t.Fatalf(`Compare("%s", "%s") = %d, want for %d`, str_a, str_b, mine, org)
+	}
+}
+
+func TestCompareBNil(t *testing.T) {
+	var (
+		str_a     string
+		str_b     string
+		org, mine int
+	)
+	//init
+	str_a = GetRandomString()
+	str_b = ""
+	org = strings.Compare(str_a, str_b)
+	mine = Compare(str_a, str_b)
+
+	if org != mine {
+		t.Fatalf(`Compare("%s", "%s") = %d, want for %d`, str_a, str_b, mine, org)
+	}
+}
+
+func TestCompareBothNil(t *testing.T) {
+	var (
+		str_a     string
+		str_b     string
+		org, mine int
+	)
+	//init
+	str_a = ""
+	str_b = ""
+	org = strings.Compare(str_a, str_b)
+	mine = Compare(str_a, str_b)
+
+	if org != mine {
+		t.Fatalf(`Compare("%s", "%s") = %d, want for %d`, str_a, str_b, mine, org)
+	}
+}
