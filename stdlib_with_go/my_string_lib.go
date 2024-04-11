@@ -70,13 +70,11 @@ func Compare(a, b string) int {
 	var (
 		runes_a []rune = []rune(a)
 		runes_b []rune = []rune(b)
-		len_b   int
 	)
 	//add 0char postfix for empty string cases
 	runes_a = append(runes_a, 0)
 	runes_b = append(runes_b, 0)
 
-	len_b = len(runes_b)
 	//compare char
 	for i, chr := range runes_a {
 		//check character
@@ -86,25 +84,19 @@ func Compare(a, b string) int {
 		if chr < runes_b[i] {
 			return -1
 		}
-		//check length
-		if len_b < 0 {
-			return -1
-		}
-		len_b--
-	}
-	//check when b is longer than a
-	if len_b > 0 {
-		return 1
 	}
 	return 0
 }
 
-/**
+/*
 func Contains(s, substr string) bool {
 	var (
-		runes_a []rune = []rune(s)
-		runes_b []rune = []rune(substr)
+		runes_org []rune = []rune(s)
+		runes_sub []rune = []rune(substr)
+		idx, s_idx int
 	)
 
+	//compare start
+	for
 }
 */
