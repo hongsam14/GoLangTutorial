@@ -8,6 +8,9 @@
 *.so
 *.dylib
 
+# swp files
+*.swp
+
 # Test binary, built with `go test -c`
 *.test
 
