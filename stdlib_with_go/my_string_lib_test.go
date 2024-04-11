@@ -134,3 +134,54 @@ func TestCompareBothNil(t *testing.T) {
 		t.Fatalf(`Compare("%s", "%s") = %d, want for %d`, str_a, str_b, mine, org)
 	}
 }
+
+func TestContainsContinueCase(t *testing.T) {
+	var (
+		str       string
+		substr    string
+		org, mine bool
+	)
+	//init
+	substr = "aab"
+	str = "aaaaaaaaaaaabaaa"
+	org = strings.Contains(str, substr)
+	mine = Contains(str, substr)
+	//compare
+	if org != mine {
+		t.Fatalf(`Contains("%s", "%s") = %t, want for %t`, str, substr, mine, org)
+	}
+}
+
+func TestContainsEmptyCase(t *testing.T) {
+	var (
+		str       string
+		substr    string
+		org, mine bool
+	)
+	//init
+	substr = ""
+	str = "aaaaaaaaa"
+	org = strings.Contains(str, substr)
+	mine = Contains(str, substr)
+	//compare
+	if org != mine {
+		t.Fatalf(`Contains("%s", "%s") = %t, want for %t`, str, substr, mine, org)
+	}
+}
+
+func TestContains(t *testing.T) {
+	var (
+		str       string
+		substr    string
+		org, mine bool
+	)
+	//init
+	substr = GetRandomString()
+	str = GetRandomString() + substr + GetRandomString()
+	org = strings.Contains(str, substr)
+	mine = Contains(str, substr)
+	//compare
+	if org != mine {
+		t.Fatalf(`Contains("%s", "%s") = %t, want for %t`, str, substr, mine, org)
+	}
+}

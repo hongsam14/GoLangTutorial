@@ -90,26 +90,34 @@ func Compare(a, b string) int {
 
 func Contains(s, substr string) bool {
 	var (
-		runes_org []rune = []rune(s)
-		runes_sub []rune = []rune(substr)
-		idx       int
+		runes_org        []rune = []rune(s)
+		runes_sub        []rune = []rune(substr)
+		org_idx, sub_idx int
 	)
 	//add 0char postfix for empty string cases
 	runes_org = append(runes_org, 0)
 	runes_sub = append(runes_sub, 0)
 	//init idx
-	idx = 0
+	org_idx = 0
+	sub_idx = 0
+
 	//compare start
-	for _, chr := range runes_org {
+	//for ; runes_org[org_idx] != 0; org_idx++ {
+	for ; org_idx < len(runes_org); org_idx++ {
+		//complete
+		if runes_sub[sub_idx] == 0 {
+			return true
+		}
 		//compare character
-		if chr == runes_sub[idx] {
-			idx++
-			if runes_sub[idx] == 0 {
-				return true
-			}
+		if runes_org[org_idx] == runes_sub[sub_idx] {
+			sub_idx++
 			continue
 		}
-		idx = 0
+		//protect continuous case
+		if sub_idx > 0 {
+			sub_idx = 0
+			org_idx--
+		}
 	}
 	return false
 }
