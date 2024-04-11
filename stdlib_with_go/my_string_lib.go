@@ -1,5 +1,10 @@
 package stdlibwithgo
 
+import (
+	"fmt"
+	"strings"
+)
+
 /**************************************
 My_Strings_lib
 
@@ -18,4 +23,30 @@ func Len(s string) int {
 
 	runes = []rune(s)
 	return len(runes)
+}
+
+/*
+*
+https://stackoverflow.com/questions/47352449/immutable-string-and-pointer-address/47352588#47352588
+https://www.freecodecamp.org/news/new-vs-make-functions-in-go/
+https://stackoverflow.com/questions/75502153/is-string-a-reference-type-or-a-value-type
+golang에서 string type은 immutable 타입이다.
+golang에서 string type은 c에서 char *와 다르다.
+golang에서 string type은 2개의 데이터를 보관한다.
+
+	type StringHeader struct {
+	    Data uintptr
+	    Len  int
+	}
+
+만약 string에 새로운 값을 할당한다면, string header의 주소는 변경되지 않고 내부의 Data 포인터 값이 변경된다.
+*/
+func Clone(str string) string {
+	//variables
+	var cpy_builder strings.Builder
+
+	for _, chr := range str {
+		fmt.Fprintf(&cpy_builder, "%d", chr)
+	}
+	return cpy_builder.String()
 }
