@@ -23,3 +23,16 @@ func	TestHelloName(t *testing.T) {
 		t.Fatalf(`Hello("Gitty") = %q, %v, want match for %#q, nil`, msg, err, want)
 	}
 }
+
+func	TestHelloEmpty(t *testing.T) {
+	//variables
+	var (
+	     msg string
+	     err error
+	     )
+	
+	msg, err = Hello("")
+	if msg != "" || err == nil {
+		t.Fatalf(`Hello("") = %q, %v, want for "", error`, msg, err)
+	}
+}
