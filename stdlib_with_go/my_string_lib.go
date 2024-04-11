@@ -60,3 +60,38 @@ func Clone(str string) string {
 	}
 	return cpy_builder.String()
 }
+
+/*
+*
+Compare returns an integer comparing two strings lexicographically. The result will be 0 if a == b, -1 if a < b, and +1 if a > b.
+golang의 문자열은 c언어와 다르게 \0으로 끝나지 않는다.
+*/
+func Compare(a, b string) int {
+	var (
+		runes_a           []rune = []rune(a)
+		runes_b           []rune = []rune(b)
+		len_a, len_b, ret int
+	)
+
+	len_a = len(runes_a)
+	len_b = len(runes_b)
+	ret = len_a - len_b
+
+	//check different length
+	if ret > 0 {
+		return 1
+	}
+	if ret < 0 {
+		return -1
+	}
+	//compare char
+	for i, chr := range runes_a {
+		if chr > runes_b[i] {
+			return 1
+		}
+		if chr < runes_b[i] {
+			return -1
+		}
+	}
+	return 0
+}

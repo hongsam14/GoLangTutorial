@@ -13,9 +13,8 @@ import (
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 func GetRandomString() string {
-	var ran []rune
+	var ran []rune = make([]rune, rand.Intn(10))
 
-	ran = make([]rune, rand.Intn(10))
 	for i := range ran {
 		ran[i] = letterRunes[rand.Intn(len(letterRunes))]
 	}
