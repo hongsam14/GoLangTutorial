@@ -6,6 +6,7 @@ https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-
 
 import (
 	"math/rand"
+	"strings"
 	"testing"
 )
 
@@ -63,5 +64,22 @@ func TestClone(t *testing.T) {
 
 	if org != cln {
 		t.Fatalf(`Clone("%s") = "%s", address: %x origin: , cpy: %x`, org, cln, &org, &cln)
+	}
+}
+
+func TestCompare(t *testing.T) {
+	var (
+		str_a     string
+		str_b     string
+		org, mine int
+	)
+	//init
+	str_a = GetRandomString()
+	str_b = GetRandomString()
+	org = strings.Compare(str_a, str_b)
+	mine = Compare(str_a, str_b)
+
+	if org != mine {
+		t.Fatalf(`Compare("%s", "%s") = %d, want for %d`, str_a, str_b, mine, org)
 	}
 }
