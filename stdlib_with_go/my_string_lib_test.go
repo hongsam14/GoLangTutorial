@@ -202,3 +202,25 @@ func TestContains(t *testing.T) {
 		t.Fatalf(`Contains("%s", "%s") = %t, want for %t`, str, substr, mine, org)
 	}
 }
+
+func TestContainsFunc(t *testing.T) {
+	var (
+		str, fstr string
+		org, mine bool
+		f         func(rune) bool
+	)
+
+	//init
+	str = GetRandomString()
+	f = func(r rune) bool {
+		return r == 'a' || r == 'e' || r == 'i' || r == 'o' || r == 'u'
+	}
+	fstr = `func(r rune) bool { return r == 'a' || r == 'e' || r == 'i' || r == 'o' || r == 'u' }`
+
+	org = strings.ContainsFunc(str, f)
+	mine = ContainsFunc(str, f)
+	//compare
+	if org != mine {
+		t.Fatalf(`Contains("%s", "%s") = %t, want for %t`, str, fstr, mine, org)
+	}
+}

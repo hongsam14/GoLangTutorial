@@ -88,6 +88,10 @@ func Compare(a, b string) int {
 	return 0
 }
 
+/*
+*
+two pointer를 비스무리우스하게 응용해서 구현.
+*/
 func Contains(s, substr string) bool {
 	var (
 		runes_org        []rune = []rune(s)
@@ -101,7 +105,7 @@ func Contains(s, substr string) bool {
 	org_idx = 0
 	sub_idx = 0
 
-	//compare start
+	//compare loop
 	for ; org_idx < len(runes_org); org_idx++ {
 		//complete
 		if runes_sub[sub_idx] == 0 {
@@ -116,6 +120,41 @@ func Contains(s, substr string) bool {
 		if sub_idx > 0 {
 			sub_idx = 0
 			org_idx--
+		}
+	}
+	return false
+}
+
+/*
+*
+ContainsFunc reports whether any Unicode code points r within s satisfy f(r).
+
+rune slice와 string은 다르다. ->> https://stackoverflow.com/questions/49062100/is-there-any-difference-between-range-over-string-and-range-over-rune-slice
+range는 string에서 byte index와 rune을 반환한다. 그렇기 때문에 UTF-8문자가 1byte가 아닐 경우가 있기 때문에, string에서 index는 1씩 증가한다는 보장이 없다.
+예를 들어------
+range string
+0: 'こ'
+3: 'ん'
+6: 'に'
+9: 'ち'
+12: 'は'
+15: '世'
+18: '界'
+
+range []rune(s)
+0: 'こ'
+1: 'ん'
+2: 'に'
+3: 'ち'
+4: 'は'
+5: '世'
+6: '界
+*/
+func ContainsFunc(s string, f func(rune) bool) bool {
+	//compare loop
+	for _, chr := range s {
+		if f(chr) {
+			return true
 		}
 	}
 	return false
