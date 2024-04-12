@@ -158,21 +158,25 @@ func ContainsFunc(s string, f func(rune) bool) bool {
 Golang에서 접근제한자는 존재하지 않지만, 함수 이름의 첫 글자가 대문자인지 아닌지에 따라 패키지 외부에서 접근 가능한지 아닌지 정할 수 있다.
 substr을 발견할 경우 substr의 마지막 char 다음 첫 글자의 idx를 반환, else 문자열 마지막 인덱스 반환
 */
-func get_substr(org, sub []rune, startpoint int) (endpoint, count int) {
+func get_substr(org, sub []rune, start int) (startpoint, endpoint int, found int) {
 	var (
-		idx_org int = startpoint
-		idx_sub int = 0
-		leng    int
+		idx_org         int = start
+		idx_sub         int = 0
+		idx_start, leng int
 	)
 
 	leng = len(org)
 	for ; idx_org < leng; idx_org++ {
 		//complete
-		if sub[idx_sub] == 0 {
-			return idx_org + 1, 1
+		if idx_sub > 0 && sub[idx_sub] == 0 {
+			return idx_start, idx_org, 1
 		}
-		//compare
+
 		if org[idx_org] == sub[idx_sub] {
+			//set startpoint
+			if idx_sub == 0 {
+				idx_start = idx_org
+			}
 			idx_sub++
 			continue
 		}
@@ -182,7 +186,7 @@ func get_substr(org, sub []rune, startpoint int) (endpoint, count int) {
 			idx_org--
 		}
 	}
-	return idx_org, 0
+	return idx_org, idx_org, 0
 }
 
 /*
@@ -204,8 +208,12 @@ func Count(s, substr string) int {
 	runes_sub = append(runes_sub, 0)
 	leng = len(runes_org)
 
+	if substr == "" {
+		return leng
+	}
+
 	for idx < leng {
-		idx, equal = get_substr(runes_org, runes_sub, idx)
+		_, idx, equal = get_substr(runes_org, runes_sub, idx)
 		cnt += equal
 	}
 
@@ -215,9 +223,24 @@ func Count(s, substr string) int {
 /*
 Cut slices s around the first instance of sep, returning the text before and after sep.
 The found result reports whether sep appears in s. If sep does not appear in s, cut returns s, "", false.
-*/
-func Cut(s, sep string) (before, after string, found bool) {
 
+golang에서 slice는 인덱싱을 지원한다.
+*/
+
+func Cut(s, sep string) (before, after string, found bool) {
+	var (
+		runes_org                   []rune = []rune(s)
+		runes_sub                   []rune = []rune(sep)
+		idx_start, idx_end, f, leng int
+	)
+
+	leng = len(runes_org)
+	//add 0char postfix for empty string cases
+	runes_org = append(runes_org, 0)
+	runes_sub = append(runes_sub, 0)
+	//contains
+	idx_start, idx_end, f = get_substr(runes_org, runes_sub, 0)
+	return string(runes_org[0:idx_start]), string(runes_org[idx_end:leng]), f == 1
 }
 
 /*

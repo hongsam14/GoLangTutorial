@@ -237,7 +237,7 @@ func TestCount(t *testing.T) {
 	mine = Count(str, substr)
 	//compare
 	if org != mine {
-		t.Fatalf(`Contains("%s", "%s") = %d, want for %d`, str, substr, mine, org)
+		t.Fatalf(`Count("%s", "%s") = %d, want for %d`, str, substr, mine, org)
 	}
 }
 
@@ -253,6 +253,24 @@ func TestCountEmpty(t *testing.T) {
 	mine = Count(str, substr)
 	//compare
 	if org != mine {
-		t.Fatalf(`Contains("%s", "%s") = %d, want for %d`, str, substr, mine, org)
+		t.Fatalf(`Count("%s", "%s") = %d, want for %d`, str, substr, mine, org)
+	}
+}
+
+func TestCut(t *testing.T) {
+	var (
+		str                          string
+		substr                       string
+		org_l, org_r, mine_l, mine_r string
+		org, mine                    bool
+	)
+	//init
+	substr = GetRandomString()
+	str = GetRandomString() + substr + GetRandomString()
+	org_l, org_r, org = strings.Cut(str, substr)
+	mine_l, mine_r, mine = Cut(str, substr)
+	//compare
+	if org_l != mine_l || org_r != mine_r || org != mine {
+		t.Fatalf(`Cut("%s", "%s") = ("%s", "%s", %t), want for ("%s", "%s", %t)`, str, substr, mine_l, mine_r, mine, org_l, org_r, org)
 	}
 }
