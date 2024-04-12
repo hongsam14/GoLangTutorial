@@ -14,7 +14,6 @@ https://pkg.go.dev/strings#pkg-overview
 ***************************************/
 
 /*
-*
 len() 함수는 문자열의 byte 크기를 return 한다. 하지만 golang에서 문자열은 UTF-8인코딩을 사용하며, 각 문자의 길이가 다를 수 있다.
 []rune은 문자열을 유니코드 slice로 변환하는데 사용한다. rune은 golang에서 유니코드 포인트를 나타내는 타입으로 int32와 동일하다.
 */
@@ -30,7 +29,6 @@ func Len(str string) int {
 }
 
 /*
-*
 https://stackoverflow.com/questions/47352449/immutable-string-and-pointer-address/47352588#47352588
 https://www.freecodecamp.org/news/new-vs-make-functions-in-go/
 https://stackoverflow.com/questions/75502153/is-string-a-reference-type-or-a-value-type
@@ -62,7 +60,6 @@ func Clone(str string) string {
 }
 
 /*
-*
 Compare returns an integer comparing two strings lexicographically. The result will be 0 if a == b, -1 if a < b, and +1 if a > b.
 golang의 문자열은 c언어와 다르게 \0으로 끝나지 않는다.
 */
@@ -89,7 +86,6 @@ func Compare(a, b string) int {
 }
 
 /*
-*
 two pointer를 비스무리우스하게 응용해서 구현.
 */
 func Contains(s, substr string) bool {
@@ -125,7 +121,6 @@ func Contains(s, substr string) bool {
 }
 
 /*
-*
 ContainsFunc reports whether any Unicode code points r within s satisfy f(r).
 
 rune slice와 string은 다르다. ->> https://stackoverflow.com/questions/49062100/is-there-any-difference-between-range-over-string-and-range-over-rune-slice
@@ -160,12 +155,10 @@ func ContainsFunc(s string, f func(rune) bool) bool {
 }
 
 /*
-*
-Count counts the number of non-overlapping instances of substr in s. If substr is an empty string, Count returns 1 + the number of Unicode code points in s.
-
 Golang에서 접근제한자는 존재하지 않지만, 함수 이름의 첫 글자가 대문자인지 아닌지에 따라 패키지 외부에서 접근 가능한지 아닌지 정할 수 있다.
+substr을 발견할 경우 substr의 마지막 char 다음 첫 글자의 idx를 반환, else 문자열 마지막 인덱스 반환
 */
-func get_substr(org, sub []rune, startpoint int) (int, int) {
+func get_substr(org, sub []rune, startpoint int) (endpoint, count int) {
 	var (
 		idx_org int = startpoint
 		idx_sub int = 0
@@ -192,6 +185,11 @@ func get_substr(org, sub []rune, startpoint int) (int, int) {
 	return idx_org, 0
 }
 
+/*
+Count counts the number of non-overlapping instances of substr in s. If substr is an empty string, Count returns 1 + the number of Unicode code points in s.
+
+Golang에서 접근제한자는 존재하지 않지만, 함수 이름의 첫 글자가 대문자인지 아닌지에 따라 패키지 외부에서 접근 가능한지 아닌지 정할 수 있다.
+*/
 func Count(s, substr string) int {
 	var (
 		cnt         int = 0
@@ -212,4 +210,20 @@ func Count(s, substr string) int {
 	}
 
 	return cnt
+}
+
+/*
+Cut slices s around the first instance of sep, returning the text before and after sep.
+The found result reports whether sep appears in s. If sep does not appear in s, cut returns s, "", false.
+*/
+func Cut(s, sep string) (before, after string, found bool) {
+
+}
+
+/*
+Fields splits the string s around each instance of one or more consecutive white space characters, as defined by unicode.
+IsSpace, returning a slice of substrings of s or an empty slice if s contains only white space.
+*/
+func Fields(s string) []string {
+	return nil
 }
