@@ -102,7 +102,6 @@ func Contains(s, substr string) bool {
 	sub_idx = 0
 
 	//compare start
-	//for ; runes_org[org_idx] != 0; org_idx++ {
 	for ; org_idx < len(runes_org); org_idx++ {
 		//complete
 		if runes_sub[sub_idx] == 0 {

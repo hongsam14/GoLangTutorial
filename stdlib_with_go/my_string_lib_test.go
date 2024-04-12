@@ -169,6 +169,23 @@ func TestContainsEmptyCase(t *testing.T) {
 	}
 }
 
+func TestContainsEmptyCase2(t *testing.T) {
+	var (
+		str       string
+		substr    string
+		org, mine bool
+	)
+	//init
+	substr = "aaaaaaaaa"
+	str = ""
+	org = strings.Contains(str, substr)
+	mine = Contains(str, substr)
+	//compare
+	if org != mine {
+		t.Fatalf(`Contains("%s", "%s") = %t, want for %t`, str, substr, mine, org)
+	}
+}
+
 func TestContains(t *testing.T) {
 	var (
 		str       string
