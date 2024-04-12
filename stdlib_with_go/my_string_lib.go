@@ -94,19 +94,18 @@ two pointer를 비스무리우스하게 응용해서 구현.
 */
 func Contains(s, substr string) bool {
 	var (
-		runes_org        []rune = []rune(s)
-		runes_sub        []rune = []rune(substr)
-		org_idx, sub_idx int
+		runes_org []rune = []rune(s)
+		runes_sub []rune = []rune(substr)
+		org_idx   int    = 0
+		sub_idx   int    = 0
+		leng      int
 	)
 	//add 0char postfix for empty string cases
 	runes_org = append(runes_org, 0)
 	runes_sub = append(runes_sub, 0)
-	//init idx
-	org_idx = 0
-	sub_idx = 0
-
+	leng = len(runes_org)
 	//compare loop
-	for ; org_idx < len(runes_org); org_idx++ {
+	for ; org_idx < leng; org_idx++ {
 		//complete
 		if runes_sub[sub_idx] == 0 {
 			return true
@@ -158,4 +157,59 @@ func ContainsFunc(s string, f func(rune) bool) bool {
 		}
 	}
 	return false
+}
+
+/*
+*
+Count counts the number of non-overlapping instances of substr in s. If substr is an empty string, Count returns 1 + the number of Unicode code points in s.
+
+Golang에서 접근제한자는 존재하지 않지만, 함수 이름의 첫 글자가 대문자인지 아닌지에 따라 패키지 외부에서 접근 가능한지 아닌지 정할 수 있다.
+*/
+func get_substr(org, sub []rune, startpoint int) (int, int) {
+	var (
+		idx_org int = startpoint
+		idx_sub int = 0
+		leng    int
+	)
+
+	leng = len(org)
+	for ; idx_org < leng; idx_org++ {
+		//complete
+		if sub[idx_sub] == 0 {
+			return idx_org + 1, 1
+		}
+		//compare
+		if org[idx_org] == sub[idx_sub] {
+			idx_sub++
+			continue
+		}
+		//return to org idx
+		if idx_sub > 0 {
+			idx_sub = 0
+			idx_org--
+		}
+	}
+	return idx_org, 0
+}
+
+func Count(s, substr string) int {
+	var (
+		cnt         int = 0
+		idx         int = 0
+		leng, equal int
+		runes_org   []rune = []rune(s)
+		runes_sub   []rune = []rune(substr)
+	)
+
+	//add 0char postfix for empty string cases
+	runes_org = append(runes_org, 0)
+	runes_sub = append(runes_sub, 0)
+	leng = len(runes_org)
+
+	for idx < leng {
+		idx, equal = get_substr(runes_org, runes_sub, idx)
+		cnt += equal
+	}
+
+	return cnt
 }

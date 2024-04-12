@@ -39,14 +39,12 @@ func TestLen(t *testing.T) {
 }
 
 func TestUTF8Len(t *testing.T) {
+	const str string = "한글"
 	var (
 		leng int
-		str  string
 	)
 
-	str = "한글"
 	leng = Len(str)
-
 	if leng != 2 {
 		t.Fatalf(`Len("%s") = %d, want for 2`, str, leng)
 	}
@@ -85,13 +83,12 @@ func TestCompare(t *testing.T) {
 }
 
 func TestCompareANil(t *testing.T) {
+	const str_a = ""
 	var (
-		str_a     string
 		str_b     string
 		org, mine int
 	)
 	//init
-	str_a = ""
 	str_b = GetRandomString()
 	org = strings.Compare(str_a, str_b)
 	mine = Compare(str_a, str_b)
@@ -102,14 +99,13 @@ func TestCompareANil(t *testing.T) {
 }
 
 func TestCompareBNil(t *testing.T) {
+	const str_b string = ""
 	var (
 		str_a     string
-		str_b     string
 		org, mine int
 	)
 	//init
 	str_a = GetRandomString()
-	str_b = ""
 	org = strings.Compare(str_a, str_b)
 	mine = Compare(str_a, str_b)
 
@@ -119,14 +115,14 @@ func TestCompareBNil(t *testing.T) {
 }
 
 func TestCompareBothNil(t *testing.T) {
+	const (
+		str_a string = ""
+		str_b string = ""
+	)
 	var (
-		str_a     string
-		str_b     string
 		org, mine int
 	)
 	//init
-	str_a = ""
-	str_b = ""
 	org = strings.Compare(str_a, str_b)
 	mine = Compare(str_a, str_b)
 
@@ -136,14 +132,14 @@ func TestCompareBothNil(t *testing.T) {
 }
 
 func TestContainsContinueCase(t *testing.T) {
+	const (
+		str    string = "aab"
+		substr string = "aaaaaaaaaaaaaaaabaaaa"
+	)
 	var (
-		str       string
-		substr    string
 		org, mine bool
 	)
 	//init
-	substr = "aab"
-	str = "aaaaaaaaaaaabaaa"
 	org = strings.Contains(str, substr)
 	mine = Contains(str, substr)
 	//compare
@@ -153,14 +149,14 @@ func TestContainsContinueCase(t *testing.T) {
 }
 
 func TestContainsEmptyCase(t *testing.T) {
+	const (
+		str    string = ""
+		substr string = "aaaaaaaaaa"
+	)
 	var (
-		str       string
-		substr    string
 		org, mine bool
 	)
 	//init
-	substr = ""
-	str = "aaaaaaaaa"
 	org = strings.Contains(str, substr)
 	mine = Contains(str, substr)
 	//compare
@@ -170,14 +166,14 @@ func TestContainsEmptyCase(t *testing.T) {
 }
 
 func TestContainsEmptyCase2(t *testing.T) {
+	const (
+		substr string = "aaaaaaaaa"
+		str    string = ""
+	)
 	var (
-		str       string
-		substr    string
 		org, mine bool
 	)
 	//init
-	substr = "aaaaaaaaa"
-	str = ""
 	org = strings.Contains(str, substr)
 	mine = Contains(str, substr)
 	//compare
@@ -222,5 +218,41 @@ func TestContainsFunc(t *testing.T) {
 	//compare
 	if org != mine {
 		t.Fatalf(`Contains("%s", "%s") = %t, want for %t`, str, fstr, mine, org)
+	}
+}
+
+func TestCount(t *testing.T) {
+	var (
+		str             string
+		substr          string
+		org, mine, loop int
+	)
+	//init
+	loop = rand.Intn(10)
+	substr = GetRandomString()
+	for i := 0; i < loop; i++ {
+		str = GetRandomString() + substr + GetRandomString()
+	}
+	org = strings.Count(str, substr)
+	mine = Count(str, substr)
+	//compare
+	if org != mine {
+		t.Fatalf(`Contains("%s", "%s") = %d, want for %d`, str, substr, mine, org)
+	}
+}
+
+func TestCountEmpty(t *testing.T) {
+	const substr string = ""
+	var (
+		str       string
+		org, mine int
+	)
+	//init
+	str = GetRandomString()
+	org = strings.Count(str, substr)
+	mine = Count(str, substr)
+	//compare
+	if org != mine {
+		t.Fatalf(`Contains("%s", "%s") = %d, want for %d`, str, substr, mine, org)
 	}
 }
