@@ -274,3 +274,24 @@ func TestCut(t *testing.T) {
 		t.Fatalf(`Cut("%s", "%s") = ("%s", "%s", %t), want for ("%s", "%s", %t)`, str, substr, mine_l, mine_r, mine, org_l, org_r, org)
 	}
 }
+
+func TestField(t *testing.T) {
+	var (
+		str       string
+		org, mine []string
+		loop      int
+	)
+	//init
+	loop = rand.Intn(10)
+	for i := 0; i < loop; i++ {
+		str = GetRandomString() + "    " + GetRandomString() + "   "
+	}
+	org = strings.Fields(str)
+	mine = Fields(str)
+	//compare
+	for i, s := range org {
+		if s != mine[i] {
+			t.Fatalf(`Fields("%s") = %v, want for %v`, str, mine, org)
+		}
+	}
+}

@@ -158,6 +158,8 @@ func ContainsFunc(s string, f func(rune) bool) bool {
 Golang에서 접근제한자는 존재하지 않지만, 함수 이름의 첫 글자가 대문자인지 아닌지에 따라 패키지 외부에서 접근 가능한지 아닌지 정할 수 있다.
 substr을 발견할 경우 substr의 마지막 char 다음 첫 글자의 idx를 반환, else 문자열 마지막 인덱스 반환
 */
+//############ERRROR##############
+
 func get_substr(org, sub []rune, start int) (startpoint, endpoint int, found int) {
 	var (
 		idx_org         int = start
@@ -166,18 +168,21 @@ func get_substr(org, sub []rune, start int) (startpoint, endpoint int, found int
 	)
 
 	leng = len(org)
+	//if substr is empty
+	if sub[idx_sub] == 0 {
+		return idx_start, idx_org, 1
+	}
 	for ; idx_org < leng; idx_org++ {
-		//complete
-		if idx_sub > 0 && sub[idx_sub] == 0 {
-			return idx_start, idx_org, 1
-		}
-
 		if org[idx_org] == sub[idx_sub] {
 			//set startpoint
 			if idx_sub == 0 {
 				idx_start = idx_org
 			}
 			idx_sub++
+			//compare complete
+			if sub[idx_sub] == 0 {
+				return idx_start, idx_org + 1, 1
+			}
 			continue
 		}
 		//return to org idx
@@ -186,7 +191,7 @@ func get_substr(org, sub []rune, start int) (startpoint, endpoint int, found int
 			idx_org--
 		}
 	}
-	return idx_org, idx_org, 0
+	return 0, 0, 0
 }
 
 /*
@@ -196,24 +201,27 @@ Golang에서 접근제한자는 존재하지 않지만, 함수 이름의 첫 글
 */
 func Count(s, substr string) int {
 	var (
-		cnt         int = 0
-		idx         int = 0
-		leng, equal int
-		runes_org   []rune = []rune(s)
-		runes_sub   []rune = []rune(substr)
+		cnt       int = 0
+		idx       int = 0
+		equal     int = 0
+		leng      int
+		runes_org []rune = []rune(s)
+		runes_sub []rune = []rune(substr)
 	)
 
 	//add 0char postfix for empty string cases
-	runes_org = append(runes_org, 0)
 	runes_sub = append(runes_sub, 0)
 	leng = len(runes_org)
 
 	if substr == "" {
-		return leng
+		return leng + 1
 	}
 
 	for idx < leng {
 		_, idx, equal = get_substr(runes_org, runes_sub, idx)
+		if equal == 0 {
+			break
+		}
 		cnt += equal
 	}
 
@@ -229,24 +237,47 @@ golang에서 slice는 인덱싱을 지원한다.
 
 func Cut(s, sep string) (before, after string, found bool) {
 	var (
-		runes_org                   []rune = []rune(s)
-		runes_sub                   []rune = []rune(sep)
-		idx_start, idx_end, f, leng int
+		runes_org             []rune = []rune(s)
+		runes_sub             []rune = []rune(sep)
+		idx_start, idx_end, f int
 	)
 
-	leng = len(runes_org)
 	//add 0char postfix for empty string cases
-	runes_org = append(runes_org, 0)
 	runes_sub = append(runes_sub, 0)
 	//contains
 	idx_start, idx_end, f = get_substr(runes_org, runes_sub, 0)
-	return string(runes_org[0:idx_start]), string(runes_org[idx_end:leng]), f == 1
+	return string(runes_org[0:idx_start]), string(runes_org[idx_end:]), f == 1
 }
 
 /*
 Fields splits the string s around each instance of one or more consecutive white space characters, as defined by unicode.
 IsSpace, returning a slice of substrings of s or an empty slice if s contains only white space.
+
+make와 new는 다르다. -->https://www.freecodecamp.org/news/new-vs-make-functions-in-go/
 */
+
 func Fields(s string) []string {
-	return nil
+	var (
+		runes_org []rune = []rune(s)
+		ret       []string
+		s_ptr     int = -2
+		e_ptr     int = -1
+	)
+	//dynamic allocate
+	ret = make([]string, 0, 5)
+	//add 0char postfix for empty string cases
+	runes_org = append(runes_org, 0)
+
+	for idx, chr := range runes_org {
+		if chr != ' ' && s_ptr <= e_ptr {
+			s_ptr = idx
+			continue
+		}
+		if (chr == ' ' || chr == 0) && e_ptr < s_ptr {
+			e_ptr = idx
+			ret = append(ret, string(runes_org[s_ptr:e_ptr]))
+			s_ptr = e_ptr
+		}
+	}
+	return ret
 }
