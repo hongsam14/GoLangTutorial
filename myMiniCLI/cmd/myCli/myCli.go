@@ -2,27 +2,29 @@ package main
 
 import (
 	"bufio"
+	ml "example/myLittleAgent"
 	"example/stdlibwithgo"
 	"fmt"
 	"os"
 )
 
-type cliObj struct {
+type myCli struct {
 	//fd
 	cmdFd *bufio.Reader
 	//cmd exitcode
 	exitCode int
 	//data field
-	cmdData string
+	cmdData       string
+	cmdParsedData []string
 }
 
-func (cObj *cliObj) Init() {
+func (cObj *myCli) Init() {
 	cObj.cmdFd = bufio.NewReader(os.Stdin)
 	//Default exitcode = 0
 	cObj.exitCode = 0
 }
 
-func (cObj *cliObj) Loop() {
+func (cObj *myCli) Loop() {
 	var err error
 
 	for cObj.exitCode == 0 {
@@ -37,12 +39,12 @@ func (cObj *cliObj) Loop() {
 		//store data
 		cObj.cmdData, _, _ = stdlibwithgo.Cut(tmp, "\n") //use Cut func to clean '\n'
 		//logic
-		cObj.exitCode = sampleFunc(cObj.cmdData)
+		cObj.exitCode = simpleExec(cObj.cmdData)
 	}
 }
 
-func sampleFunc(s string) (exitcode int) {
-	if s == "" {
+func simpleExec(s ...string) (exitcode int) {
+	if s[0] == "" {
 		fmt.Println("empty string")
 		return 1
 	}
@@ -51,13 +53,14 @@ func sampleFunc(s string) (exitcode int) {
 }
 
 func main() {
-	var (
-		cObj *cliObj
-	)
+	var m *ml.MAgent
 
-	//allocate
-	cObj = new(cliObj)
-	cObj.Init()
-	//run loop
-	cObj.Loop()
+	/*
+		cObj = new(myCli)
+		cObj.Init()
+		cObj.Loop()
+	*/
+	m = new(ml.MAgent)
+	m.Init()
+	m.Run()
 }
